@@ -2,6 +2,8 @@ import { useState } from 'react';
 import React from 'react';
 import { graphql } from '@apollo/react-hoc';
 import { gql, useQuery } from '@apollo/client';
+import { Card, InputGroup, FormControl, Button, DropdownButton, Dropdown, Form } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Login ({ navigation }){
 
@@ -23,11 +25,13 @@ function Login ({ navigation }){
     return data?.usersByNumber?.Name === password;
   }
 
-  const login = () => {
+  const login =async () => {
      console.log("username",username,"password", password, data)
+     const result = await isVerifiedUser();
+     
     if (isVerifiedUser()) {
       setPasswordIncorret(false);
-      navigation.navigate('Home');
+      window.location.replace('./');
     } else {
       setPasswordIncorret(true);
     }
@@ -40,46 +44,39 @@ function Login ({ navigation }){
 
   }
   return (
-    <div >
-      <p >
-        Ingresa tu numero de telefono
-      </p>
-      <input 
-        placeholder="numero"
-        onChange={e  => setUsername(e.target.value)}
-        value={username}
+    <div className="container">
+       <Card className="text-center" style={{ width: '18rem' }}>
+     <Card.Body className="card-body">
+     <Card.Title className="tittle">Entra</Card.Title>
+     <Card.Subtitle className="mb-2 text-muted">Iris</Card.Subtitle>
+     <label>Ingresa tu numero de telefono</label>
+       <InputGroup className="mb-3">
         
-      />
-      <p>
-        Ingresa tu nombre de usuario
-      </p>
-      <input
-        type='password'
-        placeholder="username"
-        onChange={e=> setPassword(e.target.value)}
-        value={password}
-        />
-      {(passwordIncorret && <p>
+        
+                        <FormControl
+                            placeholder="Numero de Telefono"
+                            onChange={e=> setUsername(e.target.value)}
+                            aria-label="Numero telefonico"
+                            aria-describedby="basic-addon1"
+                        />
+        </InputGroup>
+        <label>Ingresa tu nombre de usuario</label>
+        <InputGroup className="mb-3">
+                        <FormControl
+                            placeholder="Nombre De Usuario"
+                            onChange={e=> setPassword(e.target.value)}
+                            aria-label="Nombre De Usuario"
+                            aria-describedby="basic-addon1"
+                            value={password}
+                        />
+                        {(passwordIncorret && <p>
         password or username incorrect
       </p>)}
-      <div>
-
-        <button  onClick={login}
-          title="Login"
-          color={'pink'}>
-         Entra
-          </button>
-      </div>
-      <div >
-        <button
-         
-          onClick={goToSignUp}
-          title="Sign up"
-          color={'pink'}
-        >
-          Registrate
-          </button>
-      </div>
+        </InputGroup>
+        
+        <Button  onClick={login}>Entra</Button>
+     </Card.Body>
+     </Card>
     </div>
   );
 }

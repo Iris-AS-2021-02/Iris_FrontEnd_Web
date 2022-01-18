@@ -2,6 +2,8 @@ import { useState } from 'react';
 import React from 'react';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import './SignUp.css'
+import { Card, InputGroup, FormControl, Button, DropdownButton, Dropdown, Form } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SignUp = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -54,46 +56,43 @@ const SignUp = ({ navigation }) => {
     window.location.replace('./login');
   }
   return (
-    <div>
-      <p>
-        Ingresa tu numero de telefono
-      </p>
-      <input 
-        type='text'
-        placeholder="username"
-        value={username}
-        onChange={e  => setUsername(e.target.value)}
-      />
-      <p>
-        Ingresa tu nombre de usuario
-      </p>
-      <input 
-        placeholder="password"
-        secureTextEntry={true}
-        value={password}
-        onChange={e=> setPassword(e.target.value)}
-        asterik />
-      <p>
-        Por favor confirma tu nombre de usuario
-      </p>
-      <input 
-        placeholder="password"
-        secureTextEntry={true}
-        isRequired={true}
-        value={password2}
-        onChange={e=> setPassword2(e.target.value)}
-        asterik />
-      
-      <div>
-
-        <button
-          
-          onClick={createUser}
-          
-        >
-          Registrate
-        </button>
-      </div>
+    <div className="container">
+     <Card className="text-center" style={{ width: '18rem' }}>
+     <Card.Body className="card-body">
+     <Card.Title className="tittle">Registro</Card.Title>
+     <Card.Subtitle className="mb-2 text-muted">Iris</Card.Subtitle>
+     <label>Numero telefonico</label>
+       <InputGroup className="mb-3">
+        
+        
+                        <FormControl
+                            placeholder="Numero de Telefono"
+                            onChange={e=> setUsername(e.target.value)}
+                            aria-label="Numero telefonico"
+                            aria-describedby="basic-addon1"
+                        />
+        </InputGroup>
+        <label>Nombre De Usuario</label>
+        <InputGroup className="mb-3">
+                        <FormControl
+                            placeholder="Nombre De Usuario"
+                            onChange={e=> setPassword(e.target.value)}
+                            aria-label="Nombre De Usuario"
+                            aria-describedby="basic-addon1"
+                        />
+        </InputGroup>
+        <label>Confirma Tu Nombre De Usuario</label>
+        <InputGroup className="mb-3">
+                        <FormControl
+                            placeholder="Confirma Tu Nombre De Usuario"
+                            onChange={e=> setPassword2(e.target.value)}
+                            aria-label="Nombre De Usuario"
+                            aria-describedby="basic-addon1"
+                        />
+        </InputGroup>
+        <Button onClick={createUser}>Registrarse</Button>
+     </Card.Body>
+     </Card>
     </div>
   );
 }
