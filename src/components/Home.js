@@ -35,10 +35,10 @@ const Home = ({ navigation }) => {
     navigation.navigate('SignUp');
   }
   return (
-    <h1 style={{ flex: 1, marginTop: '50%' }}>
-      <p>
+    <h1 >
+     
           WELCOME HOME!
-      </p>
+     
     </h1>
   );
 }

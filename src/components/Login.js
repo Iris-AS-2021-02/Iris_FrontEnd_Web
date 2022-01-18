@@ -3,9 +3,7 @@ import React from 'react';
 import { graphql } from '@apollo/react-hoc';
 import { gql, useQuery } from '@apollo/client';
 
-
-
-const Login = ({ navigation }) => {
+function Login ({ navigation }){
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -42,44 +40,45 @@ const Login = ({ navigation }) => {
 
   }
   return (
-    <div style={{ flex: 1, marginTop: '50%' }}>
-      <p style={{ textAlign: 'center' }}>
-        Insert username
+    <div >
+      <p >
+        Ingresa tu numero de telefono
       </p>
       <input 
-        placeholder="pas"
-        isRequired
+        placeholder="numero"
+        onChange={e  => setUsername(e.target.value)}
         value={username}
-        onChangeText={(username) => setUsername(username)}
+        
       />
-      <p style={{ textAlign: 'center' }}>
-        Insert password
+      <p>
+        Ingresa tu nombre de usuario
       </p>
       <input
+        type='password'
         placeholder="username"
-        secureTextEntry={true}
-        isRequired={true}
+        onChange={e=> setPassword(e.target.value)}
         value={password}
-        onChangeText={(password) => setPassword(password)}
-        asterik />
-      {(passwordIncorret && <p style={{ textAlign: 'center',color: 'red'  }}>
+        />
+      {(passwordIncorret && <p>
         password or username incorrect
       </p>)}
-      <div style={{ margin: 12 }}>
+      <div>
 
-        <button
-          onPress={login}
+        <button  onClick={login}
           title="Login"
-          color={'pink'}
-        />
+          color={'pink'}>
+         Entra
+          </button>
       </div>
-      <div style={{ margin: 12 }}>
+      <div >
         <button
          
-          onPress={goToSignUp}
+          onClick={goToSignUp}
           title="Sign up"
           color={'pink'}
-        />
+        >
+          Registrate
+          </button>
       </div>
     </div>
   );
