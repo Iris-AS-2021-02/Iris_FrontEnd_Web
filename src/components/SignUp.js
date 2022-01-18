@@ -42,60 +42,57 @@ const SignUp = ({ navigation }) => {
   const [mutateFunction, { data, loading, error }] = useMutation(CREATE_USER);
 
   const validPassword = password === password2;
-  const createUser = () => {
+  const createUser =async () => {
     if (validPassword && !alreadyExist) {
-      mutateFunction();
-      navigation.navigate('Login');
+     const result = await mutateFunction();
+     window.location.replace('./login');
+      
     } else {
       setRepeatPassword(validPassword == false);
       setRepeatedUser(alreadyExist);
     }
+    window.location.replace('./login');
   }
   return (
-    <div style={{ flex: 1, marginTop: '50%' }}>
-      <p style={{ textAlign: 'center' }}>
-        Insert username
+    <div>
+      <p>
+        Ingresa tu numero de telefono
       </p>
       <input 
+        type='text'
         placeholder="username"
-        isRequired
         value={username}
-        onChangeText={(username) => setUsername(username)}
+        onChange={e  => setUsername(e.target.value)}
       />
-      {(repeatedUser && <p style={{ textAlign: 'center', color: 'red' }}>
-        The username is already in use by other user
-      </p>)}
-      <p style={{ textAlign: 'center' }}>
-        Insert password
+      <p>
+        Ingresa tu nombre de usuario
       </p>
       <input 
         placeholder="password"
         secureTextEntry={true}
-        isRequired={true}
         value={password}
-        onChangeText={(password) => setPassword(password)}
+        onChange={e=> setPassword(e.target.value)}
         asterik />
-      <p style={{ textAlign: 'center' }}>
-        Repeat password
+      <p>
+        Por favor confirma tu nombre de usuario
       </p>
       <input 
         placeholder="password"
         secureTextEntry={true}
         isRequired={true}
         value={password2}
-        onChangeText={(password2) => setPassword2(password2)}
+        onChange={e=> setPassword2(e.target.value)}
         asterik />
-      {(repeatPassword && <p style={{ textAlign: 'center', color: 'red'  }}>
-        The passwords do not match
-      </p>)}
-      <div style={{ margin: 12 }}>
+      
+      <div>
 
         <button
           
-          onPress={createUser}
-          title="Sign Up"
-          color={'pink'}
-        />
+          onClick={createUser}
+          
+        >
+          Registrate
+        </button>
       </div>
     </div>
   );

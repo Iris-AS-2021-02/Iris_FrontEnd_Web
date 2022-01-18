@@ -1,19 +1,19 @@
-.container {
-    position: 'absolute';
-    background: 'white';
-    flex: 1;
-    }
-  .formTextInput {
-    height: 40;
-    margin: 12;
-    padding: 10;
-
-  }
-  .submitButton {
-    height: 10;
-    width: 10;
-    padding: 10;
-    background: '#FFFFFF';
-    color: '#FFFFFF';
-    
-  }
+.card{
+  margin: 0 auto;
+  margin-top: 10px;
+}
+.container{
+  position: flex;
+}
+.card-body{
+  justify-content: center;
+  align-content: center;
+  margin: 0 auto;
+}
+.tittle{
+  margin: 0 auto;
+  margin-top: 10px;
+}
+Button{
+  margin:1%;  
+}

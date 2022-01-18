@@ -1,47 +1,33 @@
-import { useState } from 'react';
-import React from 'react';
-import { graphql } from '@apollo/react-hoc';
-import { gql, useQuery } from '@apollo/client';
-import './Home.css';
+import React from "react";
+import { Card, InputGroup, FormControl, Button } from 'react-bootstrap';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './Home.css'
 
-const Home = ({ navigation }) => {
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const { loading, error, data } = useQuery(gql`
-  query {
-    usersByNumber(number : "${username}") {
-      Name
-      Number
-    } 
-  },
-  `);
-
-
-  const isVerifiedUser= () =>{
-    return data.usersByNumber.Name === password;
-  }
-
-  const login = () =>{
-    if(isVerifiedUser()){
-      
+function Home() {
+    const toLogin = () => {
+        window.location.replace('./login')
     }
-  }
-  const goToSignUp = () => {
-    console.log(username);
-    console.log(password);
-    navigation.navigate('SignUp');
-  }
-  return (
-    <h1 >
-     
-          WELCOME HOME!
-     
-    </h1>
-  );
-}
+    const toRegister = () => {
+        window.location.replace('/signup')
+    }
 
+    return (
+        <div className="container">
+            <Card className="text-center">
+                <Card.Header>Bienvenidos a Iris</Card.Header>
+                <Card.Body>
+                    
+                    <Card.Text>
+                       Comunicate con tus amigos y seres queridos, pasa al login para comenzar
+                    </Card.Text>
+                    <Button onClick={toLogin} variant="primary" >Ingresa</Button>
+                    <Button onClick={toRegister} variant="primary">Registrate</Button>
+                </Card.Body>
+                <Card.Footer className="text-muted">Iris</Card.Footer>
+            </Card>
+        </div>
+    )
+}
 
 export default Home;
