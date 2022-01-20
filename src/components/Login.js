@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import React from 'react';
-import { Card, InputGroup, FormControl, Button, DropdownButton, Dropdown, Form } from 'react-bootstrap';
-import loginService from '../services/loginService'
+import { Card, Button, Form } from 'react-bootstrap';
+import { login } from '../services/loginService'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Login ({ navigation }){
@@ -19,17 +19,18 @@ function Login ({ navigation }){
         throw new Error();
 
       setLoading(true);
-      const token = await loginService.Login({phone: phone, username: username});
+      const data = await login({phone: phone, username: username});
+      console.log(data);
       setLoading(false);
 
-      if(token == null){
+      if(data === null){
         setInvalidCredentials(true);
         return;
       }
       
       setInvalidCredentials(false);
-      sessionStorage.setItem('token', JSON.stringify(token));
-
+      sessionStorage.setItem('session', JSON.stringify(data));
+      window.location.replace('/main')
     }
     catch{
       setInvalidCredentials(true);

@@ -1,8 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const url = 'http://ec2-3-91-161-227.compute-1.amazonaws.com:5000'
+const url = 'http://localhost:7000'
 
-const Login = async credentials => {
+const login = async credentials => {
 
     const requestBody = {
         phone: credentials.phone,
@@ -17,9 +17,9 @@ const Login = async credentials => {
         body: JSON.stringify(requestBody)
     });
 
-    const data = await response.json();
-    const token = data.token;
-    return token;
+    const result = await response.json();
+    const data = result.data;
+    return data;
 }
 
-export default { Login }
+export { login }
