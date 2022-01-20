@@ -1,20 +1,25 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getUserByNumber } from '../services/graphql'
+
+const url = 'http://ec2-3-91-161-227.compute-1.amazonaws.com:5000'
 
 const Login = async credentials => {
-    const user = await getUserByNumber (credentials.phone);
-    if (user.Name !== credentials.username)
-        return null;
-    
-    const token = 'TO DO'
 
-    let response = {
-        name: user.Name,
-        number: user.Number,
-        token: token
+    const requestBody = {
+        phone: credentials.phone,
+        name: credentials.username
     }
 
-    return response;
+    const response = await fetch(`${url}/account/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+    });
+
+    const data = await response.json();
+    const token = data.token;
+    return token;
 }
 
-export default { Login };
+export default { Login }

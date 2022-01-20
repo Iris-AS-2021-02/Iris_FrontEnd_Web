@@ -1,19 +1,17 @@
 container {
-    position: 'absolute';
-    background: 'white';
-    flex: 1;
-   }
-  
-   formTextInput {
-    height: 40;
-    margin: 12;
-    padding: 10;
-   }
-  
-  submitButton{
-    height: 10;
-    width: 10;
-    padding: 10,
-    }
+  position: "absolute";
+  background: "white";
+  flex: 1;
+}
 
-    
+formTextInput {
+  height: 40;
+  margin: 12;
+  padding: 10;
+}
+
+submitButton {
+  height: 10;
+  width: 10;
+  padding: 10;
+}

@@ -1,46 +1,46 @@
 import { useState } from 'react';
 import React from 'react';
-import { graphql } from '@apollo/react-hoc';
-import { gql, useQuery } from '@apollo/client';
 import { Card, InputGroup, FormControl, Button, DropdownButton, Dropdown, Form } from 'react-bootstrap';
 import loginService from '../services/loginService'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getUserByNumber } from '../services/graphql'
 
 function Login ({ navigation }){
 
   const [phone, setPhone] = useState("");
   const [username, setUsername] = useState("");
-  const [user, setUser] = useState(null);
   const [invalidCredentials, setInvalidCredentials] = useState(false);
-  
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
-      try{
-        const response = await loginService.Login({phone: phone, username: username});
-        if(response == null){
-          setInvalidCredentials(true);
-          return;
-        }
-        
-        setUser(response);
-        setInvalidCredentials(false);
-        console.log(response)
-      }
-      catch{
-        setInvalidCredentials(true);
-      }
+    try{
+      if (phone === '' || username === '')
+        throw new Error();
 
+      setLoading(true);
+      const token = await loginService.Login({phone: phone, username: username});
+      setLoading(false);
+
+      if(token == null){
+        setInvalidCredentials(true);
+        return;
+      }
+      
+      setInvalidCredentials(false);
+      sessionStorage.setItem('token', JSON.stringify(token));
+
+    }
+    catch{
+      setInvalidCredentials(true);
+    }
 
     // navigation.navigate('SignUp');
   }
-
   
   return (
     <div className="container">
-      <Card className="text-center" style={{ width: '18rem' }}>
+      <Card className="text-center" style={{ width: '18rem'}}>
         <Card.Title className="tittle">Entra</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">Iris</Card.Subtitle>
         <Card.Body className="card-body">
@@ -54,13 +54,17 @@ function Login ({ navigation }){
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicUser">
-            <Form.Label>Ingresa tu nombre de usuario</Form.Label>
-            <Form.Control type="password" placeholder="Nombre de Usuario" onChange={e=> setUsername(e.target.value)}/>
+            <Form.Label>Ingresa tu Contraseña</Form.Label>
+            <Form.Control type="password" placeholder="Contraseña" onChange={e=> setUsername(e.target.value)}/>
           </Form.Group>
 
-          {(invalidCredentials && <p> Número de teléfono o nombre de usuario incorrecto </p>)}
+          {loading && (<div className="text-center my-3">
+            <div className="spinner-border" role="status">
+            </div>
+          </div>)}
+          {(invalidCredentials && <p className='text-danger'> Credenciales inválidas </p>)}
 
-          <Button variant="primary" type="submit">
+          <Button className="mt-2 w-75" variant="primary" type="submit">
             Entra
           </Button>
         </Form>
