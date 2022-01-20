@@ -14,7 +14,9 @@ function Login ({ navigation }){
   const [user, setUser] = useState(null);
   const [invalidCredentials, setInvalidCredentials] = useState(false);
   
-
+  const toMain = () => {
+    window.location.replace('/main')
+  }
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -60,7 +62,7 @@ function Login ({ navigation }){
 
           {(invalidCredentials && <p> Número de teléfono o nombre de usuario incorrecto </p>)}
 
-          <Button variant="primary" type="submit">
+          <Button onClick={toMain} variant="primary" type="submit">
             Entra
           </Button>
         </Form>
