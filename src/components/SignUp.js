@@ -1,99 +1,92 @@
 import { useState } from 'react';
 import React from 'react';
-import { gql, useMutation, useQuery } from '@apollo/client';
-import './SignUp.css'
-import { Card, InputGroup, FormControl, Button, DropdownButton, Dropdown, Form } from 'react-bootstrap';
+import { Card, Button, Form } from 'react-bootstrap';
+import { register } from '../services/authenticationService'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SignUp = ({ navigation }) => {
-  const [username, setUsername] = useState("");
+
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState(false);
-  const [repeatedUser, setRepeatedUser] = useState(false);
+  const [confirmation, setConfirmation] = useState("");
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const CREATE_USER = gql`
-  mutation {
-    createUser( userAuth : {
-      Name: "${password}"
-      Number: "${username}"
-    }) {
-          Name
-    }
-  }
-`;
+  const handleRegister = async (event) => {
+    event.preventDefault();
 
-  const GET_USER_BY_NUMBER = gql`
-  query {
-    usersByNumber(number : "${username}") {
-      Name
-      Number
-    } 
-  }
-  `;
-  const users = useQuery(GET_USER_BY_NUMBER);
-  console.log("usrs",users, GET_USER_BY_NUMBER,`
-  query {
-    usersByNumber(number : "${username}") {
-      Name
-      Number
-    } 
-  }
-  `);
-  const alreadyExist =users?.data?.usersByNumber?.Name != undefined;
-  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_USER);
+    try{
+      if (phone === '' || password === '' || confirmation === ''){
+        setErrorMessage('Debes diligenciar todos los campos')
+        throw new Error();
+      }
 
-  const validPassword = password === password2;
-  const createUser =async () => {
-    if (validPassword && !alreadyExist) {
-     const result = await mutateFunction();
-     window.location.replace('./login');
+      if (password !== confirmation){
+        setErrorMessage('La contraseña no coincide')
+        throw new Error();
+      }
+
+      setErrorMessage('');
+      setInvalidCredentials(false);
+
+      setLoading(true);
+      const data = await register({phone: phone, username: password});
+      console.log(data);
+      setLoading(false);
+
+      if(data == null){
+        setErrorMessage('No te puedes registrar, contacta a un administrador')
+        throw new Error();
+      }
       
-    } else {
-      setRepeatPassword(validPassword == false);
-      setRepeatedUser(alreadyExist);
+      setInvalidCredentials(false);
+      window.location.replace('./login')
     }
-    window.location.replace('./login');
+    catch{
+      setInvalidCredentials(true);
+    }
   }
+
   return (
     <div className="container">
-     <Card className="text-center" style={{ width: '18rem' }}>
-     <Card.Body className="card-body">
-     <Card.Title className="tittle">Registro</Card.Title>
-     <Card.Subtitle className="mb-2 text-muted">Iris</Card.Subtitle>
-     <label>Numero telefonico</label>
-       <InputGroup className="mb-3">
-        
-        
-                        <FormControl
-                            placeholder="Numero de Telefono"
-                            onChange={e=> setUsername(e.target.value)}
-                            aria-label="Numero telefonico"
-                            aria-describedby="basic-addon1"
-                        />
-        </InputGroup>
-        <label>Nombre De Usuario</label>
-        <InputGroup className="mb-3">
-                        <FormControl
-                            placeholder="Nombre De Usuario"
-                            onChange={e=> setPassword(e.target.value)}
-                            aria-label="Nombre De Usuario"
-                            aria-describedby="basic-addon1"
-                        />
-        </InputGroup>
-        <label>Confirma Tu Nombre De Usuario</label>
-        <InputGroup className="mb-3">
-                        <FormControl
-                            placeholder="Confirma Tu Nombre De Usuario"
-                            onChange={e=> setPassword2(e.target.value)}
-                            aria-label="Nombre De Usuario"
-                            aria-describedby="basic-addon1"
-                        />
-        </InputGroup>
-        <Button onClick={createUser}>Registrarse</Button>
-     </Card.Body>
-     </Card>
+    <Card className="text-center" style={{ width: '18rem'}}>
+      <Card.Title className="tittle">Entra</Card.Title>
+      <Card.Subtitle className="mb-2 text-muted">Iris</Card.Subtitle>
+      <Card.Body className="card-body">
+      <Form onSubmit={handleRegister}>
+        <Form.Group className="mb-3" controlId="formBasicPhone">
+          <Form.Label>Ingresa tu número de teléfono</Form.Label>
+          <Form.Control type="phone" placeholder="Número de Teléfono" onChange={e=> setPhone(e.target.value)} />
+          <Form.Text className="text-muted">
+            {/*  We'll never share your email with anyone else. */}
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicUser">
+          <Form.Label>Ingresa tu Contraseña</Form.Label>
+          <Form.Control type="password" placeholder="Contraseña" onChange={e=> setPassword(e.target.value)}/>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicConfirmation">
+          <Form.Label>Confirma tu Contraseña</Form.Label>
+          <Form.Control type="password" placeholder="Contraseña" onChange={e=> setConfirmation(e.target.value)}/>
+        </Form.Group>
+
+        {loading && (<div className="text-center my-3">
+          <div className="spinner-border" role="status">
+          </div>
+        </div>)}
+        {(invalidCredentials && <p className='text-danger'> {errorMessage} </p>)}
+
+        <Button className="mt-2 w-75" variant="primary" type="submit">
+          Entra
+        </Button>
+      </Form>
+    </Card.Body>
+    </Card>
     </div>
+
   );
 }
 

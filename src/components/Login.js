@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import React from 'react';
 import { Card, Button, Form } from 'react-bootstrap';
-import { login } from '../services/loginService'
+import { login } from '../services/authenticationService'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Login ({ navigation }){
