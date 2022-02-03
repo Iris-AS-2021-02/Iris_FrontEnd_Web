@@ -1,4 +1,4 @@
-const url = 'http://34.67.250.175:5000/graphql';
+const url = 'http://104.154.168.137:5000/graphql';
 
 const buildRequest = async (query/*, token*/) => {
     const response = await fetch(url, {

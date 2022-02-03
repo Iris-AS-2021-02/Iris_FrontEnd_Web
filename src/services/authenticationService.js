@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getUserByNumber, createUser } from './graphql';
 
-const url = 'http://34.67.250.175:5000'
+const url = 'http://104.154.168.137:5000'
 
 const login = async credentials => {
 
