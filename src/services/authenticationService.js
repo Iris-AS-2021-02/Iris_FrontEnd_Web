@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { baseURL } from '../config'
 
-const url = 'https://localhost:5000'
+const url = baseURL
 
 const login = async credentials => {
 

@@ -1,4 +1,6 @@
-const url = 'https://localhost:5000/graphql';
+import { baseURL } from "../config";
+
+const url = `${baseURL}/graphql`;
 
 const buildRequest = async (query, token) => {
     const response = await fetch(url, {
