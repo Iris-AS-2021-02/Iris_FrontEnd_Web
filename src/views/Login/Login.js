@@ -1,42 +1,45 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import React from 'react';
 import { Card, Button, Form } from 'react-bootstrap';
-import { login } from '../services/authenticationService'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { login } from '../../services/authenticationService'
+import { useNavigate } from 'react-router-dom';
 
-function Login ({ navigation }){
-
+function Login ({ isLoggedIn, setIsLoggedIn }){
+  
   const [phone, setPhone] = useState("");
   const [username, setUsername] = useState("");
   const [invalidCredentials, setInvalidCredentials] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
+  
   const handleLogin = async (event) => {
     event.preventDefault();
-
+    
     try{
       if (phone === '' || username === '')
-        throw new Error();
-
+      throw new Error();
+      
       setLoading(true);
       const data = await login({phone: phone, username: username});
       console.log(data);
       setLoading(false);
-
-      if(data === null){
+      
+      if(data == null){
         setInvalidCredentials(true);
         return;
       }
       
       setInvalidCredentials(false);
       sessionStorage.setItem('session', JSON.stringify(data));
-      window.location.replace('/main')
+
+      navigate('/contacts');
+      setIsLoggedIn(true);
     }
     catch{
       setInvalidCredentials(true);
     }
 
-    // navigation.navigate('SignUp');
   }
   
   return (

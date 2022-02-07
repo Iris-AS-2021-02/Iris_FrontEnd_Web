@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import React from 'react';
 import { Card, Button, Form } from 'react-bootstrap';
-import { register } from '../services/authenticationService'
+import { register } from '../../services/authenticationService'
+import { useNavigate } from 'react-router-dom';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SignUp = ({ navigation }) => {
-
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const [invalidCredentials, setInvalidCredentials] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  
+  const navigate = useNavigate();
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -41,7 +44,7 @@ const SignUp = ({ navigation }) => {
       }
       
       setInvalidCredentials(false);
-      window.location.replace('./login')
+      navigate('/login');
     }
     catch{
       setInvalidCredentials(true);

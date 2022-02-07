@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const url = 'http://host.docker.internal:7000'
+const url = 'https://localhost:5000'
 
 const login = async credentials => {
 

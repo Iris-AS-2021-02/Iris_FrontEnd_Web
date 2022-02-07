@@ -1,4 +1,4 @@
-const url = 'http://host.docker.internal:7000/graphql';
+const url = 'https://localhost:5000/graphql';
 
 const buildRequest = async (query, token) => {
     const response = await fetch(url, {
@@ -46,4 +46,28 @@ const getContactsByUserId = async (userId, token) =>
     return data;
 };
 
-export { getUserByNumber, getContactsByUserId }
+const setContactSettings = async (contactId, blocked, seeStatus, uRIWallpaper, extension, removeCurrentWallpaper, token) => 
+{
+    const mutation = `mutation {
+        setSettings(contactSettings: {
+          contactID: "${contactId}"
+          blocked: ${blocked}
+          seeStatus: ${seeStatus}
+          uRIWallpaper: "${uRIWallpaper}"
+          extension: "${extension}"
+          removeCurrentWallpaper: ${removeCurrentWallpaper}
+        }){
+          contactID
+          blocked
+          seeStatus
+          wallpaper
+        }
+    }`;
+
+    const response = await buildRequest(mutation, token);
+    const data = response.data?.setSettings;
+    return data;
+
+}
+
+export { getUserByNumber, getContactsByUserId, setContactSettings }
